@@ -1,12 +1,137 @@
+import especies.*
+import reservaNatural.*
 
 describe "tests de animales" {
-//probar los métodos biomasa(), peso(), consecuenciasDelIncendio, esGrande(),
-//esPequenio(), esMediano(), estaVivo(), etc
+	test "leon muere" {
+         const leon = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 80,pesoReferencia = 80 )
+         leon.morir()
+         
+         assert.notThat(leon.estaVivo())
+        
+    }
+	
+	test "mono es pequeño"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		
+		assert.that(mono.esPequenio())
+	} 
+	
+	test "peso inicial de un animal"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		
+		assert.equals(25, mono.peso())
+	}
+	test "biomasa inicial de un mono de 25 de peso"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		
+		assert.equals(62.5, mono.biomasa())
+	}
+	test "pez se salva siempre del incendio"{
+		const pez = new Animal(coeficienteEspecie = 8, formaDeLocomocion = nadar, peso = 2, pesoReferencia = 6)
+		const lago = new Habitat()
+		lago.agregarEspecie(pez)
+		lago.incendio()
+		
+		assert.that(pez.estaVivo())
+	}
+	test "mono pierde peso después de un incendio"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 80,pesoReferencia = 80 )
+		const selva = new Habitat()
+		selva.agregarEspecie(mono)
+		selva.incendio()
+		
+		assert.equals(72, mono.peso())
+	}
+	
+	test "mono es grande"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 190,pesoReferencia = 80 )
+		
+		assert.that(mono.esGrande())
+	}
+	
+	test "mono pequeño muere en el incendio"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		const selva = new Habitat()
+		selva.agregarEspecie(mono)
+		selva.incendio()
+		
+		assert.notThat(mono.estaVivo())
+	}
 	
 
+//probar los métodos biomasa(), peso(), consecuenciasDelIncendio, esGrande(),
+//esPequenio(), esMediano(), estaVivo(), etc
 }
 
 describe "tests de plantas" {
+	test "arbusto tiene una biomasa de 10" {
+        const arbusto = new Planta(altura = 5)
+        
+        assert.equals(10, arbusto.biomasa())
+    }
+    
+    test "arbusto mide 5" {
+        const arbusto = new Planta(altura = 5)
+        
+        assert.equals(5, arbusto.altura())
+    }
+    
+    test "arbusto es grande" {
+        const arbusto = new Planta(altura = 10)
+        
+        assert.that(arbusto.esGrande())
+    }
+    
+    test "arbusto es pequeño" {
+        const arbusto = new Planta(altura = 1)
+        
+        assert.that(arbusto.esPequenio())
+    }
+    
+    test "arbusto esta vivo" {
+        const arbusto = new Planta(altura = 10)
+        
+        assert.that(arbusto.estaVivo())
+    }
+
+    test "arbusto sufre incendio y muere" {
+        const arbusto = new Planta(altura = 1)
+        arbusto.sufrirIncendio()
+        
+        assert.notThat(arbusto.estaVivo())
+    }    
+
+    test "arbusto muere" {
+        const arbusto = new Planta(altura = 1)
+        arbusto.morir()
+        
+        assert.notThat(arbusto.estaVivo())
+    }    
+	test "biomasa inicial de un arbol de 8 metros de altura"{
+		const arbol = new Planta(altura = 8)
+		
+		assert.equals(10, arbol.biomasa())
+	}
+	
+	test "arbol grande después del incendio sigue vivo"{
+		const arbol = new Planta(altura = 10)
+		const bosque = new Habitat()
+		bosque.agregarEspecie(arbol)
+		bosque.incendio()
+		
+		assert.that(arbol.estaVivo())
+	}
+	
+	test "planta pequeña no está viva después del incendio"{
+		const rosa = new Planta(altura = 1)
+		const llanura = new Habitat()
+		llanura.agregarEspecie(rosa)
+		llanura.incendio()
+		
+		assert.notThat(rosa.estaVivo())
+	}
+	
+	
 //probar los métodos biomasa(), altura(), consecuenciasDelIncendio, esGrande(),
 //esPequenio(), estaVivo() etc
 }

@@ -1,10 +1,96 @@
-
+import especies.*
+import reservaNatural.*
 describe "test de la reserva" {
+	test "cantidad total de biomasa de la reserva "{
+		const bosque = new Habitat()
+		const llanura = new Habitat()
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		const arbol = new Planta(altura = 8)
+		bosque.agregarEspecie(mono)
+		bosque.agregarEspecie(arbol)
+		llanura.agregarEspecie(arbol)
+		reserva.agregarHabitat(bosque)
+		reserva.agregarHabitat(llanura)
+		
+		assert.equals(82.5, reserva.cantTotalDeBiomasa())
+	}
+	
+	test "cantidad de habitats desequilibrados"{
+		const bosque = new Habitat()
+		const llanura = new Habitat()
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 100,pesoReferencia = 80 )
+		const mono2 = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 80,pesoReferencia = 80 )
+		bosque.agregarEspecie(mono2)
+		bosque.agregarEspecie(mono)
+		llanura.agregarEspecie(mono2)
+		llanura.agregarEspecie(mono)
+		reserva.agregarHabitat(bosque)
+		reserva.agregarHabitat(llanura)
+		
+		assert.equals(2, reserva.habitatsSinEqulibrio().size())
+	}
+	
+	test "la reserva contiene un mono"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 100,pesoReferencia = 80 )
+		const bosque = new Habitat()
+		bosque.agregarEspecie(mono)
+		reserva.agregarHabitat(bosque)
+		
+		assert.that(reserva.estaEnLaReserva(mono))
+	}
+	
+	test "el mono no está en todo los habitats"{
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 100,pesoReferencia = 80 )
+		const bosque = new Habitat()
+		const llanura = new Habitat()
+		bosque.agregarEspecie(mono)
+		reserva.agregarHabitat(bosque)
+		reserva.agregarHabitat(llanura)
+		
+		assert.notThat(reserva.estaEnTodosLosHabitas(mono))
+	}
+	
+	test "bosque es el habitat con mayor biomasa"{
+		const bosque = new Habitat()
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		const arbol = new Planta(altura = 8)
+		const llanura = new Habitat()
+		bosque.agregarEspecie(mono)
+		bosque.agregarEspecie(arbol)
+		reserva.agregarHabitat(bosque)
+		reserva.agregarHabitat(llanura)
+		
+		assert.that(reserva.habitatConMayorBiomasa() == bosque)
+	}
+
 //probar cantidadTotalBiomasa(), habitatsDesequilibrados(), contieneEspecie(), especieEstaEnTodosLosHabitats() etc
 
 }
 
 describe "test de habitats" {
+	test "biomasa total de bosque"{
+		
+		const bosque = new Habitat()
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		const arbol = new Planta(altura = 8)
+		bosque.agregarEspecie(mono)
+		bosque.agregarEspecie(arbol)
+		
+		assert.equals(72.5, bosque.biomasaTotal())
+	}
+	
+	test "incendio" {
+		const bosque = new Habitat()
+		const mono = new Animal(coeficienteEspecie = 10,formaDeLocomocion=correr, peso = 25,pesoReferencia = 80 )
+		const arbol2 = new Planta(altura = 1)
+		const arbol3 = new Planta(altura = 2)
+		
+		bosque.incendio()
+		
+		assert.that(bosque.estaVacia())
+	}
+	
+	
 //probar totalBiomasa(), producirIncendio(), 	
 	
 }
